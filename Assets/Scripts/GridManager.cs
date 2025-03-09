@@ -32,7 +32,6 @@ public class GridManager : MonoBehaviour
     {
         // Create the grid using the provided parameters.
         grid = new Grid(rows, cols, cellSize);
-        maxScore = grid.GetMaxScore();
         levelCompleted = false;
         flagNumber = 0;
 
@@ -40,6 +39,8 @@ public class GridManager : MonoBehaviour
 
     private void Start()
     {
+        maxScore = grid.GetMaxScore();
+
         // Find the UIButtons object and subscribe to the event
         uiButtons = GameObject.FindFirstObjectByType<UIButtons>();
 
@@ -134,7 +135,7 @@ public class GridManager : MonoBehaviour
                         }
                     }
                     // If flag number is 1,2 or 3 then the clicked grid Block gets flagged
-                    else if ((flagNumber == 1) || (flagNumber == 2) || (flagNumber == 3) || (flagNumber == 4))
+                    else if (((flagNumber == 1) || (flagNumber == 2) || (flagNumber == 3) || (flagNumber == 4))&&(!clickedBlock.GetIsBlockClicked()))
                     {
                         clickedBlock.SetBlockFlagged(flagNumber);
                     }
