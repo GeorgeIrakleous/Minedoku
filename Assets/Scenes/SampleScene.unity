@@ -904,7 +904,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d49c5c11700cd344b850489eefb218b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  continueButton: {fileID: 0}
+  continueButton: {fileID: 529901257}
 --- !u!1 &595835569
 GameObject:
   m_ObjectHideFlags: 0
@@ -2536,6 +2536,7 @@ MonoBehaviour:
   gridBlockLayer:
     serializedVersion: 2
     m_Bits: 4294967295
+  shopPanel: {fileID: 566304513}
 --- !u!4 &1713329058
 Transform:
   m_ObjectHideFlags: 0

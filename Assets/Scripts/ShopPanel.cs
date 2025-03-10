@@ -62,7 +62,7 @@ public class ShopPanel : MonoBehaviour
     // Called when the Continue button is clicked.
     private void HandleContinueClicked()
     {
-        HidePanel();
         OnContinue?.Invoke();
+        HidePanel();
     }
 }

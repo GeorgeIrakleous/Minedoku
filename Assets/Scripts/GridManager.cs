@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class GridManager : MonoBehaviour
 {
@@ -28,6 +29,8 @@ public class GridManager : MonoBehaviour
 
     private UIButtons uiButtons;
 
+    public ShopPanel shopPanel;
+
     private void Awake()
     {
         // Create the grid using the provided parameters.
@@ -52,6 +55,18 @@ public class GridManager : MonoBehaviour
         {
             Debug.Log("Couldn't find UIButtons GameObject.");
         }
+
+        
+        if (shopPanel != null)
+        {
+            shopPanel.OnContinue += ContinueToNextLevel;
+        }
+        else
+        {
+            Debug.Log("Couldn't find ShopPanel GameObject.");
+        }
+
+        
     }
     private void Update()
     {
@@ -156,6 +171,11 @@ public class GridManager : MonoBehaviour
     private void OnFlagButtonPressed(int flagNumber)
     {
         this.flagNumber = flagNumber;
+    }
+
+    private void ContinueToNextLevel()
+    {
+        Debug.Log("Esinexisa");
     }
 }
 

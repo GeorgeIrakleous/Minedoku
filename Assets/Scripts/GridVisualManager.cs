@@ -18,10 +18,6 @@ public class GridVisualManager : MonoBehaviour
 
     private GridManager gridManager;
 
-    //public event Action<int> OnSetFlag;
-
-    //private int flagNumber = 0;
-
     private void Awake()
     {
         //flagNumber = 0;
