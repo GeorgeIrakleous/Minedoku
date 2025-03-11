@@ -3,114 +3,109 @@ using System.Collections.Generic;
 
 public class Grid
 {
-    // Width and height of the grid
+    // Grid dimensions and cell spacing.
     private int width;
     private int height;
-
-    // Maximum points that the player can score in this grid
-    private int maxScore;
-
-    // Space between each block in the grid
     private float cellSize;
 
-    // 2D Array with all the blocks of the grid
-    private GridBlock[,] blocks; 
+    // Maximum points the player can score in this grid.
+    private int maxScore;
 
-    // 1D Arrays of the hint blocks of the grid
+    // 2D array with all grid blocks.
+    private GridBlock[,] blocks;
+
+    // 1D arrays for the hint blocks (one per row and column).
     private HintBlock[] hintsRow;
     private HintBlock[] hintsCol;
 
-    // Constructor: initializes the grid with the given dimensions and cell size.
-    public Grid(int width, int height, float cellSize)
+    // Constructor: now takes an additional 'level' parameter.
+    public Grid(int width, int height, float cellSize, int level)
     {
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
 
+        // Create the grid array.
         blocks = new GridBlock[width, height];
 
-        // Create a list with the desired frequency distribution.
-        // For a grid with (width * height) cells.
-        List<int> values = new List<int>();
-
-        // Create empty arrays of hintBlocks 
+        // Create the hint arrays.
         hintsRow = new HintBlock[width];
         hintsCol = new HintBlock[height];
 
-        // Randomly choose which distribution to use.
-        // For a 50/50 chance between Distribution A and B:
-        bool useDistributionA = Random.value < 0.5f;
+        // Determine the total number of cells.
+        int totalCells = width * height;
 
-        if (useDistributionA)
+        // Base frequencies for level 1.
+        int baseZeros = 6;   // Mines
+        int baseOnes = 15;
+        int baseTwos = 3;
+        int baseThrees = 1;
+
+        // Adjust frequencies based on level.
+        // For higher levels, increase mines and higher numbers.
+        // These formulas are arbitrary and can be balanced later.
+        int extraMines = level * 2; // Increase mines by a factor of level.
+        int extraTwos = level;      // Increase twos a bit.
+        int extraThrees = level / 2; // Increase threes gradually.
+
+        int zerosCount = baseZeros + extraMines;
+        int onesCount = baseOnes;   // We'll adjust ones to fill the grid.
+        int twosCount = baseTwos + extraTwos;
+        int threesCount = baseThrees + extraThrees;
+
+        // Calculate the sum of frequencies.
+        int frequencySum = zerosCount + onesCount + twosCount + threesCount;
+
+        // Adjust onesCount so the total matches the grid size.
+        if (frequencySum < totalCells)
         {
-            // Distribution A: 6 zeros, 15 ones, 3 twos, 1 three.
-            for (int i = 0; i < 6; i++) { values.Add(0); }
-            for (int i = 0; i < 15; i++) { values.Add(1); }
-            for (int i = 0; i < 3; i++) { values.Add(2); }
-            values.Add(3);
+            onesCount += (totalCells - frequencySum);
         }
-        else
+        else if (frequencySum > totalCells)
         {
-            // Distribution B: 6 zeros, 15 ones, 2 twos, 2 threes.
-            for (int i = 0; i < 6; i++) { values.Add(0); }
-            for (int i = 0; i < 15; i++) { values.Add(1); }
-            for (int i = 0; i < 2; i++) { values.Add(2); }
-            for (int i = 0; i < 2; i++) { values.Add(3); }
+            int diff = frequencySum - totalCells;
+            onesCount = Mathf.Max(onesCount - diff, 0);
         }
 
-        // Debug which distribution is chosen.
-        Debug.Log("Using Distribution " + (useDistributionA ? "A" : "B"));
+        // Debug: Print chosen frequencies.
+        Debug.Log($"Level {level} Grid Frequencies: Zeros={zerosCount}, Ones={onesCount}, Twos={twosCount}, Threes={threesCount}");
+
+        // Create a list with these values.
+        List<int> values = new List<int>();
+        for (int i = 0; i < zerosCount; i++) { values.Add(0); }
+        for (int i = 0; i < onesCount; i++) { values.Add(1); }
+        for (int i = 0; i < twosCount; i++) { values.Add(2); }
+        for (int i = 0; i < threesCount; i++) { values.Add(3); }
 
         // Shuffle the list using the Fisher–Yates algorithm.
         Shuffle(values);
 
-        // Assign the shuffled values to each cell in the grid.
+        // Assign the shuffled values to each cell in the grid and calculate maxScore.
         int index = 0;
         int tempMaxScore = 1;
 
         for (int i = 0; i < width; i++)
         {
-   
             for (int j = 0; j < height; j++)
             {
                 int value = values[index];
-                blocks[i, j] = new GridBlock(value,i,j);
-                if (value!=0)
+                blocks[i, j] = new GridBlock(value, i, j);
+                if (value != 0)
                 {
                     tempMaxScore *= value;
                 }
-                //Debug.Log($"Block at ({i},{j}) initialized with value: {blocks[i, j].GetBlockValue()}");
                 index++;
             }
         }
+        maxScore = tempMaxScore;
+        Debug.Log("Max score for level " + level + ": " + maxScore);
 
-        this.maxScore = tempMaxScore;
-
-        //Debug.Log("max score:"+maxScore);
-
-        // Calculate value and mine sum of each row and column and assign values to hintblocks
+        // Create HintBlocks for each row.
         for (int i = 0; i < width; i++)
-        {
-            int valueSum=0;
-            int mineSum = 0;
-            for (int j = 0; j < height; j++)
-            {
-                int temp = blocks[i, j].GetBlockValue();
-                valueSum += temp;
-                if(temp == 0)
-                {
-                    mineSum++;
-                }
-            }
-            //Debug.Log("ROW:"+i+"     ,"+"Value sum: "+valueSum+"  Mine Sum: "+mineSum);
-            hintsRow[i]= new HintBlock(valueSum, mineSum,i);
-        }
-
-        for (int j = 0; j < width; j++)
         {
             int valueSum = 0;
             int mineSum = 0;
-            for (int i = 0; i < height; i++)
+            for (int j = 0; j < height; j++)
             {
                 int temp = blocks[i, j].GetBlockValue();
                 valueSum += temp;
@@ -119,17 +114,32 @@ public class Grid
                     mineSum++;
                 }
             }
-            //Debug.Log("COL:" + j + "     ," + "Value sum: " + valueSum + "  Mine Sum: " + mineSum);
-            hintsCol[j]= new HintBlock (valueSum, mineSum, j);
+            hintsRow[i] = new HintBlock(valueSum, mineSum, i);
+        }
+
+        // Create HintBlocks for each column.
+        for (int j = 0; j < height; j++)
+        {
+            int valueSum = 0;
+            int mineSum = 0;
+            for (int i = 0; i < width; i++)
+            {
+                int temp = blocks[i, j].GetBlockValue();
+                valueSum += temp;
+                if (temp == 0)
+                {
+                    mineSum++;
+                }
+            }
+            hintsCol[j] = new HintBlock(valueSum, mineSum, j);
         }
     }
 
-    // Fisher–Yates shuffle algorithm to randomize the list.
+    // Fisher–Yates shuffle algorithm.
     private void Shuffle(List<int> list)
     {
         for (int i = list.Count - 1; i > 0; i--)
         {
-            // Random.Range for ints is min inclusive and max exclusive, so use i + 1.
             int j = Random.Range(0, i + 1);
             int temp = list[i];
             list[i] = list[j];
@@ -138,55 +148,14 @@ public class Grid
     }
 
     // Public accessors.
-    public int GetWidth()
-    {
-        return width;
-    }
-
-    public int GetHeight()
-    {
-        return height;
-    }
-
-    public float GetCellSize()
-    {
-        return cellSize;
-    }
-
-    public int GetMaxScore()
-    {
-        return maxScore;
-    }
-
-    // Retrieve a block at a specific position.
-    public GridBlock GetBlock(int x, int y)
-    {
-        return blocks[x, y];
-    }
-
-    // Optionally, expose the entire blocks array.
-    public GridBlock[,] GetBlocks()
-    {
-        return blocks;
-    }
-
-    public HintBlock[] GetHintRowArray()
-    {
-        return hintsRow;
-    }
-
-    public HintBlock[] GetHintColArray()
-    {
-        return hintsCol;
-    }
-
-    public HintBlock GetHintBlockFromRow(int x)
-    {
-        return hintsRow[x];
-    }
-
-    public HintBlock GetHintBlockFromCol(int y)
-    {
-        return hintsCol[y];
-    }
+    public int GetWidth() { return width; }
+    public int GetHeight() { return height; }
+    public float GetCellSize() { return cellSize; }
+    public int GetMaxScore() { return maxScore; }
+    public GridBlock GetBlock(int x, int y) { return blocks[x, y]; }
+    public GridBlock[,] GetBlocks() { return blocks; }
+    public HintBlock[] GetHintRowArray() { return hintsRow; }
+    public HintBlock[] GetHintColArray() { return hintsCol; }
+    public HintBlock GetHintBlockFromRow(int x) { return hintsRow[x]; }
+    public HintBlock GetHintBlockFromCol(int y) { return hintsCol[y]; }
 }

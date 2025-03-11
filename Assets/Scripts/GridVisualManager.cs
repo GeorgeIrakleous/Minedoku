@@ -18,10 +18,6 @@ public class GridVisualManager : MonoBehaviour
 
     private GridManager gridManager;
 
-    private void Awake()
-    {
-        //flagNumber = 0;
-    }
     private void Start()
     {
         // Get the GridManager component from the assigned GameObject.
@@ -32,6 +28,8 @@ public class GridVisualManager : MonoBehaviour
             Debug.LogError("GridManager component not found on the assigned GameObject!");
             return;
         }
+
+        gridManager.OnDisplayBoard += DisplayBoard;
 
         // Retrieve the grid from the GridManager.
         Grid grid = gridManager.GetGrid();
@@ -51,7 +49,31 @@ public class GridVisualManager : MonoBehaviour
         // Now instantiate visual blocks based on grid data.
         DisplayGrid(grid, rows, cols);
     }
-    void DisplayGrid(Grid grid, int rows, int cols)
+
+    // This function displays the entire board ( both the grid and hints )
+    private void DisplayBoard()
+    {
+        ClearOldVisuals();
+
+        // Retrieve the grid from the GridManager.
+        Grid grid = gridManager.GetGrid();
+
+        // Use the grid's exposed properties for rows and columns.
+        int rows = grid.GetHeight();
+        int cols = grid.GetWidth();
+
+        // Debug.Log($"GridVisualManager: Grid dimensions: {rows} x {cols}");
+
+        // Retrieve the hints from the GridManager.
+        HintBlock[] hintsRowArray = grid.GetHintRowArray();
+        HintBlock[] hintsColArray = grid.GetHintColArray();
+
+        DisplayHints(grid, rows, cols);
+
+        // Now instantiate visual blocks based on grid data.
+        DisplayGrid(grid, rows, cols);
+    }
+    private void DisplayGrid(Grid grid, int rows, int cols)
     {
         // Retrieve the blocks array (if needed).
         GridBlock[,] gridBlocks = grid.GetBlocks();
@@ -84,7 +106,7 @@ public class GridVisualManager : MonoBehaviour
         }
     }
 
-    public void DisplayHints(Grid grid,int rows,int cols)
+    private void DisplayHints(Grid grid,int rows,int cols)
     {
         float CellSize = grid.GetCellSize();
         
@@ -129,6 +151,16 @@ public class GridVisualManager : MonoBehaviour
 
         }
     }
+
+    private void ClearOldVisuals()
+    {
+        // Loop through each child in gridParent and destroy it.
+        foreach (Transform child in gridParent)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
     public Vector3 GetGridCenter()
     {
         Grid grid = gridManager.GetGrid();

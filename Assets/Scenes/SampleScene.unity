@@ -2537,6 +2537,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   shopPanel: {fileID: 566304513}
+  gameManager: {fileID: 1850159680}
 --- !u!4 &1713329058
 Transform:
   m_ObjectHideFlags: 0
@@ -2602,6 +2603,7 @@ MonoBehaviour:
   blockPrefab: {fileID: 1117726412852264290, guid: 8748ea1f372dcce43bc076832a809f89, type: 3}
   gridParent: {fileID: 1213411106}
   hintPrefab: {fileID: 1117726412852264290, guid: 56912bc798249984d8497633081a8757, type: 3}
+  gridManager: {fileID: 1713329057}
 --- !u!1 &1850159678
 GameObject:
   m_ObjectHideFlags: 0

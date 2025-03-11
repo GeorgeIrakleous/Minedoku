@@ -143,4 +143,11 @@ public class BlockView : MonoBehaviour
             flag3.gameObject.SetActive(!flag3.gameObject.activeSelf);
         }
     }
+
+    private void OnDestroy()
+    {
+        blockData.OnBlockRevealed -= OnBlockRevealed;
+        blockData.OnBlockFlagged -= OnBlockFlagged;
+    }
+
 }
