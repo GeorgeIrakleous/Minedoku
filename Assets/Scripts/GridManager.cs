@@ -34,6 +34,10 @@ public class GridManager : MonoBehaviour
 
     public GameManager gameManager;
 
+    private Vector3 mouseDownPos;
+    private bool isDragging = false;
+    public float dragThreshold = 5f; // pixels
+
     private void Awake()
     {
         // Create the grid using the provided parameters.
@@ -86,9 +90,29 @@ public class GridManager : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))  // Check for left mouse click
+        // On mouse down, record the initial position.
+        if (Input.GetMouseButtonDown(0))
         {
-            CheckForGridBlockClick();
+            mouseDownPos = Input.mousePosition;
+            isDragging = false;
+        }
+
+        // If the mouse is held down, check if we've moved enough to consider it a drag.
+        if (Input.GetMouseButton(0))
+        {
+            if (Vector3.Distance(Input.mousePosition, mouseDownPos) > dragThreshold)
+            {
+                isDragging = true;
+            }
+        }
+
+        // On mouse release, if we didn't drag significantly, treat it as a click.
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (!isDragging)
+            {
+                CheckForGridBlockClick();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
