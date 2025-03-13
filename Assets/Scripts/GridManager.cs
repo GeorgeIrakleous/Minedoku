@@ -225,7 +225,13 @@ public class GridManager : MonoBehaviour
         OnDisplayBoard?.Invoke();
 
         // Initialise level variables
+        Invoke("ResetLevel", 0.5f); // Calls ResetLevel() after 2 seconds
+    }
+
+    private void ResetLevel()
+    {
         levelCompleted = false;
         score = 1;
     }
+    
 }

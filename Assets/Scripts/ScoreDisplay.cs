@@ -40,7 +40,7 @@ public class ScoreDisplay : MonoBehaviour
         Debug.Log("display text updated");
         if (scoreText != null)
         {
-            scoreText.text = "Score: "+newScore.ToString();
+            scoreText.text = "SCORE: "+newScore.ToString();
         }
     }
 }

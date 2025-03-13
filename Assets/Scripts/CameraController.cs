@@ -23,6 +23,8 @@ public class CameraController : MonoBehaviour
     public float minZoom = 2f;
     public float maxZoom = 10f;
 
+    public float startingPosX = -90f;
+
     private Camera cam;
 
     void Start()
@@ -35,7 +37,7 @@ public class CameraController : MonoBehaviour
         Vector3 gridCenter = new Vector3(centerX, centerY, transform.position.z);
 
         // Position the camera at the grid center
-        transform.position = gridCenter;
+        transform.position = gridCenter+new Vector3(startingPosX,0,0);
         Debug.Log("Camera centered at: " + transform.position);
 
         if (cam != null && cam.orthographic)

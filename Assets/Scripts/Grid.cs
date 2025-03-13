@@ -36,15 +36,15 @@ public class Grid
         int totalCells = width * height;
 
         // Base frequencies for level 1.
-        int baseZeros = 6;   // Mines
-        int baseOnes = 15;
-        int baseTwos = 3;
+        int baseZeros = 4;   // Mines
+        int baseOnes = 16;
+        int baseTwos = 4;
         int baseThrees = 1;
 
         // Adjust frequencies based on level.
         // For higher levels, increase mines and higher numbers.
         // These formulas are arbitrary and can be balanced later.
-        int extraMines = level * 2; // Increase mines by a factor of level.
+        int extraMines = level * 1; // Increase mines by a factor of level.
         int extraTwos = level;      // Increase twos a bit.
         int extraThrees = level / 2; // Increase threes gradually.
 
