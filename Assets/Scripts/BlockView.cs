@@ -3,6 +3,8 @@ using UnityEngine.EventSystems;
 using TMPro;
 using System;
 using Unity.VisualScripting;
+using DG.Tweening;
+
 
 public class BlockView : MonoBehaviour
 {
@@ -37,48 +39,40 @@ public class BlockView : MonoBehaviour
     // Called by your grid initialization code.
     public void Initialize(GridBlock data)
     {
-        // Initialise grid block flags
-        mineFlag.gameObject.SetActive(false);
+        // Ensure flags are disabled initially
+        mineFlag.SetActive(false);
         flag1.gameObject.SetActive(false);
         flag2.gameObject.SetActive(false);
         flag3.gameObject.SetActive(false);
 
 
-        blockData = data;
+        // Set initial scale to zero (invisible)
+        transform.localScale = Vector3.zero;
 
-        // Find the grid manager
+        // Play the scale-up animation over 0.5 seconds with a bounce effect
+        transform.DOScale(Vector3.one, 0.5f)
+            .SetEase(Ease.OutBack) // Makes the animation feel natural and bouncy
+            .SetDelay(UnityEngine.Random.Range(0f, 0.3f)); // Optional: Adds slight delay for variation
+
+        // Rotate effect (rotates 360° over time and resets)
+        transform.DORotate(Vector3.forward * 360, 0.5f, RotateMode.FastBeyond360)
+            .SetEase(Ease.OutCubic);
+
+        blockData = data;
         gridManager = GameObject.FindFirstObjectByType<GridManager>();
 
-        // Subscribe to the GridBlock's event so that when it is clicked (logic-wise),
-        // this BlockView reacts by hiding its cover.
         blockData.OnBlockRevealed += OnBlockRevealed;
         blockData.OnBlockFlagged += OnBlockFlagged;
 
-        // Update visuals based on the block's data.
+        // Update visuals
         if (blockData.IsMine())
         {
-            Debug.Log("en pompa");
-            if (mineSpriteObject != null)
-            {
-                Debug.Log("ivra to");
-                mineSpriteObject.SetActive(true);
-
-            }
-            else
-            {
-                Debug.Log("en ivra to sprite tis pompa");
-            }
-
-            if (textMesh != null)
-            {
-
-                textMesh.gameObject.SetActive(false);
-            }
+            if (mineSpriteObject != null) mineSpriteObject.SetActive(true);
+            if (textMesh != null) textMesh.gameObject.SetActive(false);
         }
         else
         {
-            if (mineSpriteObject != null)
-                mineSpriteObject.SetActive(false);
+            if (mineSpriteObject != null) mineSpriteObject.SetActive(false);
             if (textMesh != null)
             {
                 textMesh.gameObject.SetActive(true);
@@ -86,10 +80,9 @@ public class BlockView : MonoBehaviour
             }
         }
 
-        // Ensure the cover layer is enabled initially.
-        if (coverLayer != null)
-            coverLayer.SetActive(true);
+        if (coverLayer != null) coverLayer.SetActive(true);
     }
+
 
     // Function that gets triggered when the grid block is revealed.
     private void OnBlockRevealed(object sender, EventArgs e)
