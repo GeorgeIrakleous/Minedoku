@@ -1,23 +1,22 @@
 using UnityEngine;
 using TMPro;  // Use TMPro for UI text
 
-public class ScoreDisplay : MonoBehaviour
+public class StageDisplay : MonoBehaviour
 {
     // Reference to the TextMeshProUGUI component that displays the score.
     // (If you're using TextMeshPro for UI elements, you typically use TextMeshProUGUI.)
-    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI stageText;
 
     // Reference to the GridManager.
-    private GameManager gameManager;
+    public ShopPanel shopPanel;
+    public GameManager gameManager;
 
     void Start()
     {
-        // Find the GridManager in the scene.
-        gameManager = UnityEngine.Object.FindFirstObjectByType<GameManager>();
-        if (gameManager != null)
+        if (shopPanel != null)
         {
             // Subscribe to the score updated event.
-            gameManager.OnScoreDisplay += UpdateScoreText;
+            shopPanel.OnContinue += UpdateStageText;
         }
         else
         {
@@ -28,19 +27,19 @@ public class ScoreDisplay : MonoBehaviour
     void OnDestroy()
     {
         // Unsubscribe to prevent memory leaks.
-        if (gameManager != null)
+        if (shopPanel != null)
         {
-            gameManager.OnScoreDisplay -= UpdateScoreText;
+            shopPanel.OnContinue -= UpdateStageText;
         }
     }
 
     // Event handler that updates the score text.
-    private void UpdateScoreText(int level)
+    private void UpdateStageText()
     {
         Debug.Log("display text updated");
-        if (scoreText != null)
+        if (stageText != null)
         {
-            scoreText.text = "SCORE: "+level.ToString();
+            stageText.text = "STAGE: " + gameManager.GetCurrentLevel().ToString();
         }
     }
 }

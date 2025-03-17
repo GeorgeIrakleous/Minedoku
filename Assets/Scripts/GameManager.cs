@@ -11,11 +11,9 @@ public class GameManager : MonoBehaviour
 
     // Event to notify when game over occurs.
     public event Action OnGameOver;
-
     public event Action OnLevelCompleted;
-
-    // Event to notify when player completed a level.
-    //public event Action OnLevelCompleted;
+    public event Action<int> OnScoreDisplay;
+    public event Action<int> OnStageDisplay;
 
     // Reference to the GridManager (which is assumed to fire an event when score is zero)
     private GridManager gridManager;
@@ -41,6 +39,7 @@ public class GameManager : MonoBehaviour
         {
             gridManager.OnScoreZero += HandleScoreZero;
             gridManager.OnScoreMax += HandleLevelCompleted;
+            gridManager.OnScoreUpdate += HandleScoreUpdate;
         }
     }
 
@@ -57,8 +56,13 @@ public class GameManager : MonoBehaviour
     // It adds the given multiplier to the score and checks if the score becomes zero.
     public void AddScore(int addedScore)
     {
-        score += addedScore;
-        Debug.Log("Score updated: " + score);
+        this.score += addedScore;
+    }
+
+    public void HandleScoreUpdate(int addedScore)
+    {
+        int displayScore = score + addedScore;
+        OnScoreDisplay?.Invoke(displayScore);
     }
 
     // This method is called when the score reaches zero (either via the event or direct check).
@@ -81,6 +85,7 @@ public class GameManager : MonoBehaviour
         AddScore(levelScore);
         NextLevel();
         OnLevelCompleted?.Invoke();
+        OnStageDisplay?.Invoke(level);
     }
     public void EndGame()
     {

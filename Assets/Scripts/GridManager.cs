@@ -8,7 +8,7 @@ public class GridManager : MonoBehaviour
     // Private grid instance from your plain C# Grid class.
     private Grid grid;
 
-    private int score = 1;
+    private int currentScore = 1;
     private int maxScore;
 
     public event Action OnScoreZero;
@@ -164,26 +164,26 @@ public class GridManager : MonoBehaviour
                 {   // If flag number is 0 the clicked grid Block gets be revealed
                     if (flagNumber == 0)
                     {
-                        if ((!clickedBlock.GetIsBlockClicked()) && (!levelCompleted) && (score != 0))
+                        if ((!clickedBlock.GetIsBlockClicked()) && (!levelCompleted) && (currentScore != 0))
                         {
                             // Signal the block that it was clicked to remove the cover and set blockIsClicked to true.
                             clickedBlock.SetBlockClicked();
 
-                            score *= clickedBlock.GetBlockValue(); //Update score of this specific level
+                            currentScore *= clickedBlock.GetBlockValue(); //Update score of this specific level
 
-                            OnScoreUpdate?.Invoke(score);
+                            OnScoreUpdate?.Invoke(currentScore);
 
-                            Debug.Log("score: " + score);
+                            Debug.Log("score: " + currentScore);
 
-                            if (score == 0)
+                            if (currentScore == 0)
                             {
                                 // Notify the gameManager that the player lost
                                 OnScoreZero?.Invoke();
                             }
-                            else if (score == maxScore)
+                            else if (currentScore == maxScore)
                             {
                                 // Notify the gameManager that this level is completed
-                                OnScoreMax?.Invoke(score);
+                                OnScoreMax?.Invoke(currentScore);
                                 levelCompleted = true;
                             }
 
@@ -231,7 +231,7 @@ public class GridManager : MonoBehaviour
     private void ResetLevel()
     {
         levelCompleted = false;
-        score = 1;
+        currentScore = 1;
     }
     
 }
