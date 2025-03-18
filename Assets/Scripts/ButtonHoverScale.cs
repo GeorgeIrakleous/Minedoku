@@ -8,9 +8,16 @@ public class FlexibleHoverScale : MonoBehaviour, IPointerEnterHandler, IPointerE
     public Vector3 hoverScale = Vector3.one * 1.1f;
     public float tweenDuration = 0.2f;
 
+    private bool animationEnabled;
+
     private Tween currentTween;
 
     public GameManager gameManager;
+
+    private void Awake()
+    {
+        animationEnabled = true;
+    }
 
     private void Start()
     {
@@ -27,8 +34,10 @@ public class FlexibleHoverScale : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        currentTween?.Kill();
-        currentTween = transform.DOScale(hoverScale, tweenDuration).SetEase(Ease.OutQuad);
+        if (animationEnabled) { 
+            currentTween?.Kill();
+            currentTween = transform.DOScale(hoverScale, tweenDuration).SetEase(Ease.OutQuad);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -40,5 +49,15 @@ public class FlexibleHoverScale : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         currentTween?.Kill();
         transform.localScale = normalScale;
+        animationEnabled = false;
     }
+
+    private void OnDestroy()
+    {
+        if (gameManager != null)
+        {
+            gameManager.OnGameOver -= DisableHoverEffect;
+        }
+    }
+
 }

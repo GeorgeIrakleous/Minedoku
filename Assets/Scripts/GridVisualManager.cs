@@ -18,6 +18,8 @@ public class GridVisualManager : MonoBehaviour
 
     private GridManager gridManager;
 
+    public GameManager gameManager;
+
     private void Start()
     {
         // Get the GridManager component from the assigned GameObject.
@@ -30,7 +32,8 @@ public class GridVisualManager : MonoBehaviour
         }
 
         gridManager.OnDisplayBoard += DisplayBoard;
-        gridManager.OnScoreMax += RevealGrid;
+
+        gameManager.OnRevealGrid += RevealGrid;
 
         // Retrieve the grid from the GridManager.
         Grid grid = gridManager.GetGrid();
@@ -175,7 +178,7 @@ public class GridVisualManager : MonoBehaviour
         return gridCenter;
     }
 
-    public void RevealGrid(int score)
+    public void RevealGrid()
     {
         BlockView[] blockViews = GameObject.FindObjectsByType<BlockView>(FindObjectsSortMode.None);
 

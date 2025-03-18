@@ -888,7 +888,7 @@ MonoBehaviour:
   normalScale: {x: 1.5, y: 1.5, z: 1.5}
   hoverScale: {x: 1.75, y: 1.75, z: 1.75}
   tweenDuration: 0.2
-  enableHoverEffect: 1
+  gameManager: {fileID: 0}
 --- !u!1 &534070063
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,7 +1026,7 @@ MonoBehaviour:
   normalScale: {x: 1.25, y: 1.25, z: 1.25}
   hoverScale: {x: 1.5, y: 1.5, z: 1.5}
   tweenDuration: 0.2
-  enableHoverEffect: 1
+  gameManager: {fileID: 0}
 --- !u!1 &566304511
 GameObject:
   m_ObjectHideFlags: 0
@@ -1216,7 +1216,7 @@ MonoBehaviour:
   normalScale: {x: 1.25, y: 1.25, z: 1.25}
   hoverScale: {x: 1.5, y: 1.5, z: 1.5}
   tweenDuration: 0.2
-  enableHoverEffect: 1
+  gameManager: {fileID: 0}
 --- !u!1 &671185227
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,7 +1354,7 @@ MonoBehaviour:
   normalScale: {x: 1.25, y: 1.25, z: 1.25}
   hoverScale: {x: 1.5, y: 1.5, z: 1.5}
   tweenDuration: 0.2
-  enableHoverEffect: 1
+  gameManager: {fileID: 0}
 --- !u!1 &827856083
 GameObject:
   m_ObjectHideFlags: 0
@@ -1963,7 +1963,7 @@ MonoBehaviour:
   normalScale: {x: 1.25, y: 1.25, z: 1.25}
   hoverScale: {x: 1.5, y: 1.5, z: 1.5}
   tweenDuration: 0.2
-  enableHoverEffect: 1
+  gameManager: {fileID: 0}
 --- !u!1 &1213411105
 GameObject:
   m_ObjectHideFlags: 0
@@ -2828,6 +2828,7 @@ MonoBehaviour:
   blockPrefab: {fileID: 1117726412852264290, guid: 8748ea1f372dcce43bc076832a809f89, type: 3}
   gridParent: {fileID: 1213411106}
   hintPrefab: {fileID: 1117726412852264290, guid: 56912bc798249984d8497633081a8757, type: 3}
+  gameManager: {fileID: 1850159680}
 --- !u!1 &1850159678
 GameObject:
   m_ObjectHideFlags: 0
@@ -3056,7 +3057,7 @@ MonoBehaviour:
   normalScale: {x: 1.25, y: 1.25, z: 1.25}
   hoverScale: {x: 1.5, y: 1.5, z: 1.5}
   tweenDuration: 0.2
-  enableHoverEffect: 1
+  gameManager: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

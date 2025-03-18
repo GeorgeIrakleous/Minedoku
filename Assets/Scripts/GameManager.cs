@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     // Event to notify when game over occurs.
     public event Action OnGameOver;
     public event Action OnLevelCompleted;
+    public event Action OnRevealGrid;
     public event Action<int> OnScoreDisplay;
     public event Action<int> OnStageDisplay;
 
@@ -86,12 +87,14 @@ public class GameManager : MonoBehaviour
         NextLevel();
         OnLevelCompleted?.Invoke();
         OnStageDisplay?.Invoke(level);
+        OnRevealGrid?.Invoke();
     }
     public void EndGame()
     {
         gameOver = true;
         Debug.Log("Game Over!");
         OnGameOver?.Invoke();
+        OnRevealGrid?.Invoke();
     }
 
     public int GetCurrentLevel()
