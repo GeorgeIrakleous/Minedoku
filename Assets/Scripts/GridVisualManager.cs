@@ -30,6 +30,7 @@ public class GridVisualManager : MonoBehaviour
         }
 
         gridManager.OnDisplayBoard += DisplayBoard;
+        gridManager.OnScoreMax += RevealGrid;
 
         // Retrieve the grid from the GridManager.
         Grid grid = gridManager.GetGrid();
@@ -172,5 +173,17 @@ public class GridVisualManager : MonoBehaviour
         Vector3 gridCenter = new Vector3(centerX, centerY, 0)+gridParent.position;
 
         return gridCenter;
+    }
+
+    public void RevealGrid(int score)
+    {
+        BlockView[] blockViews = GameObject.FindObjectsByType<BlockView>(FindObjectsSortMode.None);
+
+
+        // Loop through each BlockView and hide its cover.
+        foreach (BlockView view in blockViews)
+        {
+            view.RevealBlock();
+        }
     }
 }

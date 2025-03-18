@@ -187,6 +187,7 @@ GameObject:
   - component: {fileID: 609021242732025097}
   - component: {fileID: 4064551585240857834}
   - component: {fileID: 8837169225937517069}
+  - component: {fileID: 5464968085243244623}
   m_Layer: 0
   m_Name: Block
   m_TagString: Untagged
@@ -282,6 +283,21 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.75, y: 1.75}
   m_EdgeRadius: 0
+--- !u!114 &5464968085243244623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1117726412852264290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f3758a35b776de49acf10f4921eeed9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalScale: {x: 1, y: 1, z: 1}
+  hoverScale: {x: 1.1, y: 1.1, z: 1.1}
+  tweenDuration: 0.2
 --- !u!1 &1198429553848690528
 GameObject:
   m_ObjectHideFlags: 0

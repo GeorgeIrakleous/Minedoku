@@ -32,8 +32,8 @@ public class BlockView : MonoBehaviour
     // Data of the Grid Block
     private GridBlock blockData;
 
-    // Reference to the Grid Manager
-    private GridManager gridManager;
+    // Reference to block animation script
+    FlexibleHoverScale hoverEffect;
 
 
     // Called by your grid initialization code.
@@ -59,7 +59,6 @@ public class BlockView : MonoBehaviour
             .SetEase(Ease.OutCubic);
 
         blockData = data;
-        gridManager = GameObject.FindFirstObjectByType<GridManager>();
 
         blockData.OnBlockRevealed += OnBlockRevealed;
         blockData.OnBlockFlagged += OnBlockFlagged;
@@ -105,16 +104,51 @@ public class BlockView : MonoBehaviour
     // This method is called to reveal the block (hide the cover).
     public void RevealBlock()
     {
+        // Fade out the cover.
         if (coverLayer != null)
         {
-            // Disable or hide the cover layer to reveal the underlying value.
-            coverLayer.SetActive(false);
-            mineFlag.SetActive(false);
-            flag1.gameObject.SetActive(false);
-            flag2.gameObject.SetActive(false);
-            flag3.gameObject.SetActive(false);
+            SpriteRenderer sr = coverLayer.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                // Fade the sprite out over 0.5 seconds.
+                sr.DOFade(0f, 0.5f)
+                    .SetEase(Ease.OutQuad)
+                    .OnComplete(() =>
+                    {
+                        coverLayer.SetActive(false);
+                    });
+            }
+            else
+            {
+                // If coverLayer doesn't have a SpriteRenderer, simply disable it after a delay.
+                DOTween.Sequence()
+                    .AppendInterval(0.5f)
+                    .OnComplete(() => coverLayer.SetActive(false));
+            }
         }
+
+        // Optional: Add a bounce (scale punch) to the entire BlockView for a "pop" effect.
+        transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0.1f), 0.3f, 10, 1f)
+            .SetEase(Ease.OutQuad);
+
+        // Disable any flags.
+        mineFlag.SetActive(false);
+        flag1.gameObject.SetActive(false);
+        flag2.gameObject.SetActive(false);
+        flag3.gameObject.SetActive(false);
+
+        FlexibleHoverScale hoverEffect = GetComponent<FlexibleHoverScale>();
+        if (hoverEffect != null)
+        {
+            // Optionally, reset scale to normal in case the tween was in progress.
+            transform.localScale = Vector3.one;
+            hoverEffect.DisableHoverEffect();
+        }
+
+
     }
+
+
 
     // This method is called to flag the block.
     public void SetFlag(int flagNumber)
@@ -141,6 +175,12 @@ public class BlockView : MonoBehaviour
     {
         blockData.OnBlockRevealed -= OnBlockRevealed;
         blockData.OnBlockFlagged -= OnBlockFlagged;
+    }
+
+    public void StopAnimation()
+    {
+        transform.localScale = Vector3.one;
+        hoverEffect.DisableHoverEffect();
     }
 
 }

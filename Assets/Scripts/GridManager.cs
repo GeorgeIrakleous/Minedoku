@@ -17,6 +17,7 @@ public class GridManager : MonoBehaviour
     public event Action OnDisplayBoard;
 
     private bool levelCompleted = false;
+    private bool gameOver = false;
 
     // Optionally, you can set these via the Inspector.
     [SerializeField] private int rows = 5;
@@ -44,6 +45,7 @@ public class GridManager : MonoBehaviour
         
         levelCompleted = false;
         flagNumber = 0;
+        gameOver = false;
 
     }
 
@@ -164,23 +166,26 @@ public class GridManager : MonoBehaviour
                 {   // If flag number is 0 the clicked grid Block gets be revealed
                     if (flagNumber == 0)
                     {
-                        if ((!clickedBlock.GetIsBlockClicked()) && (!levelCompleted) && (currentScore != 0))
+                        if ((!clickedBlock.GetIsBlockClicked()) && (!levelCompleted) && (!gameOver))
                         {
                             // Signal the block that it was clicked to remove the cover and set blockIsClicked to true.
                             clickedBlock.SetBlockClicked();
 
-                            currentScore *= clickedBlock.GetBlockValue(); //Update score of this specific level
+                            if (clickedBlock.GetBlockValue() == 0)
+                            {
+                                // Game Over
+                                OnScoreZero?.Invoke();
+                                gameOver = true;
+                            }
+                            else { 
+                                currentScore *= clickedBlock.GetBlockValue(); //Update score of this specific level
+                            }
 
                             OnScoreUpdate?.Invoke(currentScore);
 
                             Debug.Log("score: " + currentScore);
 
-                            if (currentScore == 0)
-                            {
-                                // Notify the gameManager that the player lost
-                                OnScoreZero?.Invoke();
-                            }
-                            else if (currentScore == maxScore)
+                            if (currentScore == maxScore)
                             {
                                 // Notify the gameManager that this level is completed
                                 OnScoreMax?.Invoke(currentScore);
@@ -215,8 +220,6 @@ public class GridManager : MonoBehaviour
 
     private void ContinueToNextLevel()
     {
-        Debug.Log("Esinexisa");
-
         // Create a new grid for the next level
         grid = new Grid(rows, cols, cellSize, gameManager.GetCurrentLevel());
         maxScore = grid.GetMaxScore();
