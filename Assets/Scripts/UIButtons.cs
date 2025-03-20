@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using DG.Tweening;
 
 public class UIButtons : MonoBehaviour
 {
@@ -21,22 +22,50 @@ public class UIButtons : MonoBehaviour
     public Color normalColor = Color.white;
     public Color selectedColor = Color.green;
 
+    public GridManager gridManager;
+
     private void Start()
     {
+        gridManager.OnUiButtonsVisualUpdate += HandleUiButtonClicked;
+
         lastSelectedButton = revealButton;
         SetButtonColor(revealButton, selectedColor);
 
         // Subscribe each button's click event to call ButtonClicked with a unique int and the button itself.
         if (revealButton != null)
-            revealButton.onClick.AddListener(() => ButtonClicked(0, revealButton));
+            revealButton.onClick.AddListener(() => HandleUiButtonClicked(0));
         if (mineFlagButton != null)
-            mineFlagButton.onClick.AddListener(() => ButtonClicked(1, mineFlagButton));
+            mineFlagButton.onClick.AddListener(() => HandleUiButtonClicked(1));
         if (flag1Button != null)
-            flag1Button.onClick.AddListener(() => ButtonClicked(2, flag1Button));
+            flag1Button.onClick.AddListener(() => HandleUiButtonClicked(2));
         if (flag2Button != null)
-            flag2Button.onClick.AddListener(() => ButtonClicked(3, flag2Button));
+            flag2Button.onClick.AddListener(() => HandleUiButtonClicked(3));
         if (flag3Button != null)
-            flag3Button.onClick.AddListener(() => ButtonClicked(4, flag3Button));
+            flag3Button.onClick.AddListener(() => HandleUiButtonClicked(4));
+    }
+
+    private void HandleUiButtonClicked(int flagNumber)
+    {
+        if (flagNumber == 0)
+        {
+            ButtonClicked(0, revealButton);
+        }else if (flagNumber == 1)
+        {
+            ButtonClicked(1, mineFlagButton);
+        }
+        else if (flagNumber == 2)
+        {
+            ButtonClicked(2, flag1Button);
+        }
+        else if (flagNumber == 3)
+        {
+            ButtonClicked(3, flag2Button);
+        }
+        else if (flagNumber == 4)
+        {
+            ButtonClicked(4, flag3Button);
+        }
+        
     }
 
     // Called when any button is clicked.
@@ -69,5 +98,6 @@ public class UIButtons : MonoBehaviour
         cb.pressedColor = color;
         cb.selectedColor = color;
         btn.colors = cb;
+
     }
 }

@@ -15,6 +15,8 @@ public class GridManager : MonoBehaviour
     public event Action<int> OnScoreUpdate;
     public event Action<int> OnScoreMax;
     public event Action OnDisplayBoard;
+    public event Action OnSettingsPanel;
+    public event Action<int> OnUiButtonsVisualUpdate;
 
     private bool levelCompleted = false;
     private bool gameOver = false;
@@ -34,6 +36,8 @@ public class GridManager : MonoBehaviour
     public ShopPanel shopPanel;
 
     public GameManager gameManager;
+
+    public GameObject settingsPanel;
 
     private Vector3 mouseDownPos;
     private bool isDragging = false;
@@ -120,22 +124,34 @@ public class GridManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             flagNumber = 0;
+            OnUiButtonsVisualUpdate?.Invoke(flagNumber);
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
             flagNumber = 1;
+            OnUiButtonsVisualUpdate?.Invoke(flagNumber);
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
             flagNumber = 2;
+            OnUiButtonsVisualUpdate?.Invoke(flagNumber);
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
             flagNumber = 3;
+            OnUiButtonsVisualUpdate?.Invoke(flagNumber);
         }
         else if (Input.GetKeyDown(KeyCode.T))
         {
             flagNumber = 4;
+            OnUiButtonsVisualUpdate?.Invoke(flagNumber);
+        }
+
+
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            OnSettingsPanel?.Invoke();
         }
     }
 
@@ -148,7 +164,7 @@ public class GridManager : MonoBehaviour
         // The gridBlockLayer is a LayerMask that filters which layers to check.
         Collider2D hitCollider = Physics2D.OverlapPoint(worldPoint, gridBlockLayer);
 
-        if (hitCollider != null)
+        if ((hitCollider != null)&&(!settingsPanel.activeSelf))
         {
             // Get the BlockView script from the collider.
             // This script holds a reference to the GridBlock.
