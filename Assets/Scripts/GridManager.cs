@@ -126,22 +126,22 @@ public class GridManager : MonoBehaviour
             flagNumber = 0;
             OnUiButtonsVisualUpdate?.Invoke(flagNumber);
         }
-        else if (Input.GetKeyDown(KeyCode.W))
+        else if (Input.GetKeyDown(KeyCode.BackQuote))
         {
             flagNumber = 1;
             OnUiButtonsVisualUpdate?.Invoke(flagNumber);
         }
-        else if (Input.GetKeyDown(KeyCode.E))
+        else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             flagNumber = 2;
             OnUiButtonsVisualUpdate?.Invoke(flagNumber);
         }
-        else if (Input.GetKeyDown(KeyCode.R))
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             flagNumber = 3;
             OnUiButtonsVisualUpdate?.Invoke(flagNumber);
         }
-        else if (Input.GetKeyDown(KeyCode.T))
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             flagNumber = 4;
             OnUiButtonsVisualUpdate?.Invoke(flagNumber);
@@ -152,6 +152,13 @@ public class GridManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             OnSettingsPanel?.Invoke();
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            flagNumber++;
+            flagNumber = flagNumber % 5;
+            OnUiButtonsVisualUpdate?.Invoke(flagNumber);
         }
     }
 
