@@ -38,7 +38,7 @@ public class CameraController : MonoBehaviour
 
         // Position the camera at the grid center
         transform.position = gridCenter+new Vector3(startingPosX,0,0);
-        Debug.Log("Camera centered at: " + transform.position);
+        //Debug.Log("Camera centered at: " + transform.position);
 
         if (cam != null && cam.orthographic)
         {
@@ -64,7 +64,7 @@ public class CameraController : MonoBehaviour
                 cam.orthographicSize = Mathf.Max(requiredSizeVertical, requiredSizeHorizontal);
             }
 
-            Debug.Log("Camera orthographicSize set to: " + cam.orthographicSize);
+            //Debug.Log("Camera orthographicSize set to: " + cam.orthographicSize);
         }
     }
 

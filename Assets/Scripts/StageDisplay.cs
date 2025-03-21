@@ -36,7 +36,6 @@ public class StageDisplay : MonoBehaviour
     // Event handler that updates the score text.
     private void UpdateStageText()
     {
-        Debug.Log("display text updated");
         if (stageText != null)
         {
             stageText.text = "STAGE: " + gameManager.GetCurrentLevel().ToString();

@@ -3,87 +3,88 @@ using System.Collections.Generic;
 
 public class Grid
 {
-    // Grid dimensions and cell spacing.
-    private int width;
-    private int height;
-    private float cellSize;
-
-    // Maximum points the player can score in this grid.
-    private int maxScore;
-
-    // 2D array with all grid blocks.
-    private GridBlock[,] blocks;
-
-    // 1D arrays for the hint blocks (one per row and column).
-    private HintBlock[] hintsRow;
-    private HintBlock[] hintsCol;
+    public int width;
+    public int height;
+    public float cellSize;
+    public GridBlock[,] blocks;
+    public HintBlock[] hintsRow;
+    public HintBlock[] hintsCol;
+    public int maxScore;
 
     // Constructor: now takes an additional 'level' parameter.
-    public Grid(int width, int height, float cellSize, int level)
+    public Grid(int level, float cellSize)
     {
-        this.width = width;
-        this.height = height;
+        // Fixed grid size 5x5.
+        this.width = 5;
+        this.height = 5;
         this.cellSize = cellSize;
-
-        // Create the grid array.
         blocks = new GridBlock[width, height];
-
-        // Create the hint arrays.
         hintsRow = new HintBlock[width];
         hintsCol = new HintBlock[height];
 
-        // Determine the total number of cells.
-        int totalCells = width * height;
+        int totalCells = width * height; // 25 cells
 
-        // Base frequencies for level 1.
-        int baseZeros = 4;   // Mines
-        int baseOnes = 16;
-        int baseTwos = 4;
-        int baseThrees = 1;
+        // Calculate bombCount based on level.
+        int baseBombCount = 2;
+        int bombCount = baseBombCount + level;
+        bombCount = Mathf.Clamp(bombCount, 1, totalCells - 1); // Ensure at least one safe cell.
 
-        // Adjust frequencies based on level.
-        // For higher levels, increase mines and higher numbers.
-        // These formulas are arbitrary and can be balanced later.
-        int extraMines = level * 1; // Increase mines by a factor of level.
-        int extraTwos = level;      // Increase twos a bit.
-        int extraThrees = level / 2; // Increase threes gradually.
+        // Safe count is the rest.
+        int safeCount = totalCells - bombCount;
 
-        int zerosCount = baseZeros + extraMines;
-        int onesCount = baseOnes;   // We'll adjust ones to fill the grid.
-        int twosCount = baseTwos + extraTwos;
-        int threesCount = baseThrees + extraThrees;
+        // Calculate safeSum.
+        // For example: safeSum = safeCount + level * 2.
+        int safeSum = safeCount + level * 2;
+        // Clamp safeSum to the valid range [safeCount, safeCount * 3].
+        safeSum = Mathf.Clamp(safeSum, safeCount, safeCount * 3);
 
-        // Calculate the sum of frequencies.
-        int frequencySum = zerosCount + onesCount + twosCount + threesCount;
 
-        // Adjust onesCount so the total matches the grid size.
-        if (frequencySum < totalCells)
+        Debug.Log($"Level {level} Grid: BombCount = {bombCount}, SafeCount = {safeCount}, SafeSum = {safeSum}");
+
+        // Generate safe cell values.
+        List<int> safeValues = new List<int>();
+        // Start by initializing all safe cells to 1.
+        for (int i = 0; i < safeCount; i++)
         {
-            onesCount += (totalCells - frequencySum);
+            safeValues.Add(1);
         }
-        else if (frequencySum > totalCells)
+        // Distribute the extra points.
+        int diff = safeSum - safeCount; // extra points to assign
+        while (diff > 0)
         {
-            int diff = frequencySum - totalCells;
-            onesCount = Mathf.Max(onesCount - diff, 0);
+            int idx = UnityEngine.Random.Range(0, safeCount);
+            if (safeValues[idx] < 3)
+            {
+                safeValues[idx]++;
+                diff--;
+            }
         }
 
-        // Debug: Print chosen frequencies.
-        Debug.Log($"Level {level} Grid Frequencies: Zeros={zerosCount}, Ones={onesCount}, Twos={twosCount}, Threes={threesCount}");
+        // Create bomb values (zeros).
+        List<int> bombValues = new List<int>();
+        for (int i = 0; i < bombCount; i++)
+        {
+            bombValues.Add(0);
+        }
 
-        // Create a list with these values.
+        // Combine safe and bomb values.
         List<int> values = new List<int>();
-        for (int i = 0; i < zerosCount; i++) { values.Add(0); }
-        for (int i = 0; i < onesCount; i++) { values.Add(1); }
-        for (int i = 0; i < twosCount; i++) { values.Add(2); }
-        for (int i = 0; i < threesCount; i++) { values.Add(3); }
+        values.AddRange(safeValues);
+        values.AddRange(bombValues);
 
-        // Shuffle the list using the Fisher–Yates algorithm.
+        // Ensure we have exactly totalCells values.
+        if (values.Count != totalCells)
+        {
+            Debug.LogError("Mismatch in total cell count!");
+            return;
+        }
+
+        // Shuffle the list (Fisher–Yates).
         Shuffle(values);
 
-        // Assign the shuffled values to each cell in the grid and calculate maxScore.
+        // Assign values to blocks and calculate maxScore.
         int index = 0;
         int tempMaxScore = 1;
-
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
@@ -98,40 +99,40 @@ public class Grid
             }
         }
         maxScore = tempMaxScore;
-        Debug.Log("Max score for level " + level + ": " + maxScore);
+        //Debug.Log("Max score for level " + level + ": " + maxScore);
 
         // Create HintBlocks for each row.
         for (int i = 0; i < width; i++)
         {
             int valueSum = 0;
-            int mineSum = 0;
+            int mineCount = 0;
             for (int j = 0; j < height; j++)
             {
                 int temp = blocks[i, j].GetBlockValue();
                 valueSum += temp;
                 if (temp == 0)
                 {
-                    mineSum++;
+                    mineCount++;
                 }
             }
-            hintsRow[i] = new HintBlock(valueSum, mineSum, i);
+            hintsRow[i] = new HintBlock(valueSum, mineCount, i);
         }
 
         // Create HintBlocks for each column.
         for (int j = 0; j < height; j++)
         {
             int valueSum = 0;
-            int mineSum = 0;
+            int mineCount = 0;
             for (int i = 0; i < width; i++)
             {
                 int temp = blocks[i, j].GetBlockValue();
                 valueSum += temp;
                 if (temp == 0)
                 {
-                    mineSum++;
+                    mineCount++;
                 }
             }
-            hintsCol[j] = new HintBlock(valueSum, mineSum, j);
+            hintsCol[j] = new HintBlock(valueSum, mineCount, j);
         }
     }
 

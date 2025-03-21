@@ -76,13 +76,13 @@ public class GameManager : MonoBehaviour
     private void NextLevel()
     {
         level++;
-        Debug.Log("level: " + level);
+        //Debug.Log("level: " + level);
     }
 
     private void HandleLevelCompleted(int levelScore)
     {
         // At this point a gridManager notified the gameManager that the player completed a level
-        Debug.Log("You completed the level!");
+        //Debug.Log("You completed the level!");
         AddScore(levelScore);
         NextLevel();
         OnLevelCompleted?.Invoke();
@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
     public void EndGame()
     {
         gameOver = true;
-        Debug.Log("Game Over!");
+        //Debug.Log("Game Over!");
         OnGameOver?.Invoke();
         OnRevealGrid?.Invoke();
     }

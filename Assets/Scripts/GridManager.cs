@@ -58,7 +58,7 @@ public class GridManager : MonoBehaviour
 
         if (gameManager != null)
         {
-            grid = new Grid(rows, cols, cellSize, gameManager.GetCurrentLevel());
+            grid = new Grid(gameManager.GetCurrentLevel(), cellSize);
             maxScore = grid.GetMaxScore();
         }
         else
@@ -206,7 +206,7 @@ public class GridManager : MonoBehaviour
 
                             OnScoreUpdate?.Invoke(currentScore);
 
-                            Debug.Log("score: " + currentScore);
+                            //Debug.Log("score: " + currentScore);
 
                             if (currentScore == maxScore)
                             {
@@ -244,7 +244,7 @@ public class GridManager : MonoBehaviour
     private void ContinueToNextLevel()
     {
         // Create a new grid for the next level
-        grid = new Grid(rows, cols, cellSize, gameManager.GetCurrentLevel());
+        grid = new Grid(gameManager.GetCurrentLevel(), cellSize);
         maxScore = grid.GetMaxScore();
 
         // Fire an event to let the grid visual manager know that it needs to create new visuals for the new board
