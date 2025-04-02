@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Game Over!");
         OnGameOver?.Invoke();
         OnRevealGrid?.Invoke();
+        SoundManager.Instance.PlaySfx("cat");
     }
 
     public int GetCurrentLevel()
