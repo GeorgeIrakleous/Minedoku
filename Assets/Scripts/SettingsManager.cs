@@ -59,6 +59,7 @@ public class SettingsManager : MonoBehaviour
     // This method toggles the settings panel and overlay when the event is fired.
     public void TogglePanel()
     {
+        SoundManager.Instance.PlaySfx("pause");
         // Check if the settings panel is currently active.
         if (settingsPanel.activeSelf)
         {

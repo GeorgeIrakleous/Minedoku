@@ -38,7 +38,7 @@ public class StageDisplay : MonoBehaviour
     {
         if (stageText != null)
         {
-            stageText.text = "STAGE: " + gameManager.GetCurrentLevel().ToString();
+            stageText.text = gameManager.GetCurrentLevel().ToString();
         }
     }
 }

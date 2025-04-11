@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;  // Use TMPro for UI text
+using DG.Tweening;
 
 public class ScoreDisplay : MonoBehaviour
 {
@@ -40,7 +41,25 @@ public class ScoreDisplay : MonoBehaviour
         Debug.Log("display text updated");
         if (scoreText != null)
         {
-            scoreText.text = "SCORE: "+level.ToString();
+            scoreText.text = level.ToString();
+            AnimateScoreText();
         }
     }
+
+    private void AnimateScoreText()
+    {
+        // Get the RectTransform component from the scoreText
+        RectTransform rt = scoreText.GetComponent<RectTransform>();
+        if (rt != null)
+        {
+            // Ensure the pivot is centered so scaling doesn't shift the object
+            rt.pivot = new Vector2(0.5f, 0.5f);
+
+            // Create a DOTween sequence to scale up then back to normal
+            Sequence seq = DOTween.Sequence();
+            seq.Append(rt.DOScale(1.2f, 0.15f).SetEase(Ease.OutQuad));
+            seq.Append(rt.DOScale(1f, 0.15f).SetEase(Ease.InQuad));
+        }
+    }
+
 }

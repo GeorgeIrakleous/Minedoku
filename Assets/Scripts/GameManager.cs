@@ -81,6 +81,8 @@ public class GameManager : MonoBehaviour
 
     private void HandleLevelCompleted(int levelScore)
     {
+        SoundManager.Instance.PlaySfx("win");
+
         // At this point a gridManager notified the gameManager that the player completed a level
         //Debug.Log("You completed the level!");
         AddScore(levelScore);
@@ -95,7 +97,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Game Over!");
         OnGameOver?.Invoke();
         OnRevealGrid?.Invoke();
-        SoundManager.Instance.PlaySfx("cat");
+        SoundManager.Instance.PlaySfx("lose");
     }
 
     public int GetCurrentLevel()

@@ -178,6 +178,8 @@ public class GridManager : MonoBehaviour
             BlockView blockView = hitCollider.GetComponent<BlockView>();
             if (blockView != null)
             {
+                
+
                 // Retrieve the GridBlock using the BlockView's getter method.
                 GridBlock clickedBlock = blockView.GetGridBlock();
 
@@ -186,11 +188,18 @@ public class GridManager : MonoBehaviour
                     Debug.Log("Couldn't find clicked grid block object.");
                 }
                 else
-                {   // If flag number is 0 the clicked grid Block gets be revealed
+                {   
+                    // If flag number is 0 the clicked grid Block gets be revealed
+
+                    
+
                     if (flagNumber == 0)
                     {
                         if ((!clickedBlock.GetIsBlockClicked()) && (!levelCompleted) && (!gameOver))
                         {
+                            // Play Click Sound
+                            SoundManager.Instance.PlaySfx("gridBlockClick");
+
                             // Signal the block that it was clicked to remove the cover and set blockIsClicked to true.
                             clickedBlock.SetBlockClicked();
 
