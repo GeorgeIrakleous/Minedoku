@@ -20,8 +20,19 @@ public class StageDisplay : MonoBehaviour
         }
         else
         {
+            Debug.LogError("ShopPanel not found in the scene!");
+        }
+
+        if (gameManager != null)
+        {
+            // Subscribe to the score updated event.
+            gameManager.OnStageDisplay += UpdateStageText;
+        }
+        else
+        {
             Debug.LogError("GridManager not found in the scene!");
         }
+
     }
 
     void OnDestroy()

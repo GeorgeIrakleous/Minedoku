@@ -1,13 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameOverPanel : MonoBehaviour
 {
     public Button playAgainButton;
     public Button backToMenuButton;
+    public event Action OnPlayAgain;
 
     // Store the reference to the pulse tween so we can kill it later.
     private Tween pulseTween;
@@ -20,7 +21,8 @@ public class GameOverPanel : MonoBehaviour
         if(backToMenuButton!=null)
             backToMenuButton.onClick.AddListener(() =>
             {
-                SceneManager.LoadScene(1);
+                OnPlayAgain?.Invoke();
+                gameObject.SetActive(false);
             });
 
         if (playAgainButton != null)

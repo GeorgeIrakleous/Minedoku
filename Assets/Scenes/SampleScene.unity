@@ -4922,11 +4922,11 @@ AudioSource:
   m_GameObject: {fileID: 1778433322}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 4386860168157412454, guid: 5e8e4e95843c7454b917bc9b56cef6fe, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -5132,6 +5132,7 @@ MonoBehaviour:
   level: 1
   score: 1
   gameOver: 0
+  gameOverPanel: {fileID: 1293097217}
 --- !u!1 &2036655118
 GameObject:
   m_ObjectHideFlags: 0
@@ -5509,11 +5510,11 @@ AudioSource:
   m_GameObject: {fileID: 2140726201}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 8526000174515395646, guid: 5e8e4e95843c7454b917bc9b56cef6fe, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.039
   m_Pitch: 1
   Loop: 1
   Mute: 0

@@ -60,6 +60,7 @@ public class GridManager : MonoBehaviour
         {
             grid = new Grid(gameManager.GetCurrentLevel(), cellSize);
             maxScore = grid.GetMaxScore();
+            gameManager.OnPlayAgain += PlayAgain;
         }
         else
         {
@@ -191,8 +192,6 @@ public class GridManager : MonoBehaviour
                 {   
                     // If flag number is 0 the clicked grid Block gets be revealed
 
-                    
-
                     if (flagNumber == 0)
                     {
                         if ((!clickedBlock.GetIsBlockClicked()) && (!levelCompleted) && (!gameOver))
@@ -211,9 +210,10 @@ public class GridManager : MonoBehaviour
                             }
                             else { 
                                 currentScore *= clickedBlock.GetBlockValue(); //Update score of this specific level
+                                OnScoreUpdate?.Invoke(currentScore);
                             }
 
-                            OnScoreUpdate?.Invoke(currentScore);
+                            
 
                             //Debug.Log("score: " + currentScore);
 
@@ -261,6 +261,14 @@ public class GridManager : MonoBehaviour
 
         // Initialise level variables
         Invoke("ResetLevel", 0.5f); // Calls ResetLevel() after 2 seconds
+    }
+
+    private void PlayAgain()
+    {
+        ContinueToNextLevel();
+        currentScore = 1;
+        gameOver = false;
+        levelCompleted = false;
     }
 
     private void ResetLevel()

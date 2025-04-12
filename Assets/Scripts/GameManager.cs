@@ -14,10 +14,12 @@ public class GameManager : MonoBehaviour
     public event Action OnLevelCompleted;
     public event Action OnRevealGrid;
     public event Action<int> OnScoreDisplay;
-    public event Action<int> OnStageDisplay;
+    public event Action OnStageDisplay;
+    public event Action OnPlayAgain;
 
     // Reference to the GridManager (which is assumed to fire an event when score is zero)
     private GridManager gridManager;
+    [SerializeField] private GameOverPanel gameOverPanel;
 
     private void Awake()
     {
@@ -41,6 +43,11 @@ public class GameManager : MonoBehaviour
             gridManager.OnScoreZero += HandleScoreZero;
             gridManager.OnScoreMax += HandleLevelCompleted;
             gridManager.OnScoreUpdate += HandleScoreUpdate;
+        }
+
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.OnPlayAgain += PlayAgain;
         }
     }
 
@@ -88,16 +95,26 @@ public class GameManager : MonoBehaviour
         AddScore(levelScore);
         NextLevel();
         OnLevelCompleted?.Invoke();
-        OnStageDisplay?.Invoke(level);
+        OnStageDisplay?.Invoke();
         OnRevealGrid?.Invoke();
     }
-    public void EndGame()
+    private void EndGame()
     {
         gameOver = true;
         //Debug.Log("Game Over!");
         OnGameOver?.Invoke();
         OnRevealGrid?.Invoke();
         SoundManager.Instance.PlaySfx("lose");
+    }
+
+    private void PlayAgain()
+    {
+        level = 1;
+        score = 0;
+        gameOver = false;
+        OnPlayAgain?.Invoke();
+        OnScoreDisplay?.Invoke(score);
+        OnStageDisplay?.Invoke();
     }
 
     public int GetCurrentLevel()
