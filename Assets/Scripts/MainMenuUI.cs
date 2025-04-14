@@ -1,11 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class MainMenuUI: MonoBehaviour
 {
     [SerializeField] private Button playButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button howToPlayButton;
+
+    public event Action OnHowToPlay;
 
     private void Awake()
     {
@@ -17,6 +21,11 @@ public class MainMenuUI: MonoBehaviour
         quitButton.onClick.AddListener(() =>
         {
             Application.Quit();
+        });
+
+        howToPlayButton.onClick.AddListener(() =>
+        {
+            OnHowToPlay?.Invoke();
         });
     }
 }

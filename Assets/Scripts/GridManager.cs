@@ -11,6 +11,8 @@ public class GridManager : MonoBehaviour
     private int currentScore = 1;
     private int maxScore;
 
+    private bool inputActive = true;
+
     public event Action OnScoreZero;
     public event Action<int> OnScoreUpdate;
     public event Action<int> OnScoreMax;
@@ -165,6 +167,9 @@ public class GridManager : MonoBehaviour
 
     private void CheckForGridBlockClick()
     {
+        if (!inputActive)
+            return;
+
         // Convert the mouse position (in screen coordinates) to a world point.
         Vector2 worldPoint = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
@@ -252,6 +257,8 @@ public class GridManager : MonoBehaviour
 
     private void ContinueToNextLevel()
     {
+        SetInputActiveFalse();
+
         // Create a new grid for the next level
         grid = new Grid(gameManager.GetCurrentLevel(), cellSize);
         maxScore = grid.GetMaxScore();
@@ -259,8 +266,10 @@ public class GridManager : MonoBehaviour
         // Fire an event to let the grid visual manager know that it needs to create new visuals for the new board
         OnDisplayBoard?.Invoke();
 
+        ResetLevel();
+
         // Initialise level variables
-        Invoke("ResetLevel", 0.5f); // Calls ResetLevel() after 2 seconds
+        Invoke("SetInputActiveTrue", 0.2f); // Calls ResetLevel() after 0.5 seconds
     }
 
     private void PlayAgain()
@@ -269,6 +278,16 @@ public class GridManager : MonoBehaviour
         currentScore = 1;
         gameOver = false;
         levelCompleted = false;
+    }
+
+    private void SetInputActiveTrue()
+    {
+        inputActive = true;
+    }
+
+    private void SetInputActiveFalse()
+    {
+        inputActive = false;
     }
 
     private void ResetLevel()

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class CameraController : MonoBehaviour
     public float startingPosX = -90f;
 
     private Camera cam;
+
+    [SerializeField] private GameObject settingsLayout;
 
     void Start()
     {
@@ -78,6 +81,9 @@ public class CameraController : MonoBehaviour
     // Allows dragging the camera with the mouse.
     private void HandleDrag()
     {
+        if (settingsLayout.activeInHierarchy)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             lastMousePosition = Input.mousePosition;
