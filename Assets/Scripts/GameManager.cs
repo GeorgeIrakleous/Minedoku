@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     // Reference to the GridManager (which is assumed to fire an event when score is zero)
     private GridManager gridManager;
     [SerializeField] private GameOverPanel gameOverPanel;
+    [SerializeField] private VolumeSettings volumeSettings;
 
     private void Awake()
     {
@@ -48,6 +49,11 @@ public class GameManager : MonoBehaviour
         if (gameOverPanel != null)
         {
             gameOverPanel.OnPlayAgain += PlayAgain;
+        }
+
+        if (volumeSettings != null)
+        {
+            volumeSettings.Initialise();
         }
     }
 
