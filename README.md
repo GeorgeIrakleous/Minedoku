@@ -1,5 +1,7 @@
 # Minedoku
 
+![Minedoku_mainMenu](https://github.com/user-attachments/assets/d9487485-d142-482b-a5fd-1e681bed2969)
+
 A fresh take on puzzle games, blending grid-based deduction with multiplication scoring. Reveal and clear blocks to match target scores, flag suspected blocks, and navigate levels of increasing complexity.
 
 ---
@@ -44,6 +46,8 @@ A fresh take on puzzle games, blending grid-based deduction with multiplication 
 
 ## How to Play
 
+![Minedoku_gameplay](https://github.com/user-attachments/assets/03c6d798-39d2-4137-91b0-70a251d3491f)
+
 1. **Reveal Blocks**: Click a block to uncover its value.
 2. **Avoid Mines (**``**)**: Revealing a mine ends the level.
 3. **Score Goal**: Multiply your score by each revealed `2` or `3`. Reach the maximum product (precomputed per level) to win.
@@ -52,8 +56,12 @@ A fresh take on puzzle games, blending grid-based deduction with multiplication 
    - Use `1`, `2`, `3`, `Q` to select value‑flag mode.
    - **Right-click** cycles through available flag types.
 5. **Hints**: Row/column indicators show the sum of values and count of mines remaining.
+6. **Stage Completed**: Once you have revealed all the hidden 2s and 3s the stage is completed and you can continue to the next level.
+
+![Maindoku_stageCompleted](https://github.com/user-attachments/assets/19569627-5c1c-43ef-94e1-821784a2e00d)
 
 ---
+
 
 ## Controls & Shortcuts
 
