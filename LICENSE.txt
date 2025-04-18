@@ -1,0 +1,21 @@
+Personal Use License (PUL) 1.0
+© 2025 [Your Name]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to use, copy, modify, and merge copies of the Software **for personal, non‑commercial purposes only**, subject to the following conditions:
+
+1. **Non‑Commercial Use Only**  
+   You may **not** distribute, sublicense, sell, or otherwise exploit the Software or any derivative works for commercial gain.
+
+2. **Attribution**  
+   You must include this license notice in all copies or substantial portions of the Software.
+
+3. **No Warranty**  
+   THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.  
+
+   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+4. **Termination**  
+   This license and the rights granted hereunder will automatically terminate if you violate any of these terms. Upon termination, you must destroy all copies of the Software in your possession.
+
+---
+This license applies only to the code and assets included in this repository. Any third‑party content (fonts, audio, art, etc.) remains subject to its own license terms. ```
