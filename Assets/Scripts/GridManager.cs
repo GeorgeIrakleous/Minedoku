@@ -10,6 +10,8 @@ public class GridManager : MonoBehaviour
 
     private int currentScore = 1;
     private int maxScore;
+    private int maxSumOfPoints;
+    private int currentSumOfPoints=0;
 
     private bool inputActive = true;
 
@@ -19,6 +21,8 @@ public class GridManager : MonoBehaviour
     public event Action OnDisplayBoard;
     public event Action OnSettingsPanel;
     public event Action<int> OnUiButtonsVisualUpdate;
+    public event Action<float> OnProgressBarUpdate;
+    public event Action OnClearProgressBar;
 
     private bool levelCompleted = false;
     private bool gameOver = false;
@@ -52,7 +56,7 @@ public class GridManager : MonoBehaviour
         levelCompleted = false;
         flagNumber = 0;
         gameOver = false;
-
+        currentSumOfPoints = 0;
     }
 
     private void Start()
@@ -62,6 +66,7 @@ public class GridManager : MonoBehaviour
         {
             grid = new Grid(gameManager.GetCurrentLevel(), cellSize);
             maxScore = grid.GetMaxScore();
+            maxSumOfPoints = grid.GetSumOfPoints();
             gameManager.OnPlayAgain += PlayAgain;
         }
         else
@@ -213,9 +218,12 @@ public class GridManager : MonoBehaviour
                                 OnScoreZero?.Invoke();
                                 gameOver = true;
                             }
-                            else { 
+                            else if (clickedBlock.GetBlockValue() != 1)
+                            {
+                                
                                 currentScore *= clickedBlock.GetBlockValue(); //Update score of this specific level
                                 OnScoreUpdate?.Invoke(currentScore);
+                                currentSumOfPoints += clickedBlock.GetBlockValue();
                             }
 
                             
@@ -228,6 +236,13 @@ public class GridManager : MonoBehaviour
                                 OnScoreMax?.Invoke(currentScore);
                                 levelCompleted = true;
                             }
+
+                            Debug.Log("Current poooints: "+ currentSumOfPoints);
+                            Debug.Log("Max poooints: " + maxSumOfPoints);
+
+                            float levelProgress = (float)currentSumOfPoints / (float)maxSumOfPoints;
+                            
+                            OnProgressBarUpdate?.Invoke(levelProgress);
 
                         }
                     }
@@ -262,9 +277,11 @@ public class GridManager : MonoBehaviour
         // Create a new grid for the next level
         grid = new Grid(gameManager.GetCurrentLevel(), cellSize);
         maxScore = grid.GetMaxScore();
+        maxSumOfPoints = grid.GetSumOfPoints();
 
         // Fire an event to let the grid visual manager know that it needs to create new visuals for the new board
         OnDisplayBoard?.Invoke();
+        OnClearProgressBar?.Invoke();
 
         ResetLevel();
 
@@ -294,6 +311,7 @@ public class GridManager : MonoBehaviour
     {
         levelCompleted = false;
         currentScore = 1;
+        currentSumOfPoints = 0;
     }
     
 }

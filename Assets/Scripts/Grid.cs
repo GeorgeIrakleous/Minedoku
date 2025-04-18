@@ -10,6 +10,7 @@ public class Grid
     public HintBlock[] hintsRow;
     public HintBlock[] hintsCol;
     public int maxScore;
+    public int sumOfPoints;
 
     // Constructor: now takes an additional 'level' parameter.
     public Grid(int level, float cellSize)
@@ -50,6 +51,7 @@ public class Grid
         }
         // Distribute the extra points.
         int diff = safeSum - safeCount; // extra points to assign
+
         while (diff > 0)
         {
             int idx = UnityEngine.Random.Range(0, safeCount);
@@ -94,6 +96,10 @@ public class Grid
                 if (value != 0)
                 {
                     tempMaxScore *= value;
+                    if(value != 1)
+                    {
+                        sumOfPoints +=value;
+                    }
                 }
                 index++;
             }
@@ -153,6 +159,7 @@ public class Grid
     public int GetHeight() { return height; }
     public float GetCellSize() { return cellSize; }
     public int GetMaxScore() { return maxScore; }
+    public int GetSumOfPoints() { return sumOfPoints; }
     public GridBlock GetBlock(int x, int y) { return blocks[x, y]; }
     public GridBlock[,] GetBlocks() { return blocks; }
     public HintBlock[] GetHintRowArray() { return hintsRow; }
