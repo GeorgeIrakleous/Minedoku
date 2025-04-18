@@ -30,7 +30,7 @@ A fresh take on puzzle games, blending grid-based deduction with multiplication 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/minedoku.git
+   git clone https://github.com/GeorgeIrakleous/Minedoku.git
    ```
 2. Open Unity Hub and add the cloned folder as a project.
 3. Let Unity import assets and compile scripts.
