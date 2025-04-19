@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class VolumeSettings : MonoBehaviour
 {
@@ -10,17 +11,8 @@ public class VolumeSettings : MonoBehaviour
 
     private void Start()
     {
-        if (PlayerPrefs.HasKey("musicVolume"))
-        {
-            LoadVolume();
-            Debug.Log("1");
-        }
-        else
-        {
-            SetMusicVolume();
-            SetSFXVolume();
-            Debug.Log("2");
-        }
+
+        Initialise();
 
     }
 
@@ -29,13 +21,11 @@ public class VolumeSettings : MonoBehaviour
         if (PlayerPrefs.HasKey("musicVolume"))
         {
             LoadVolume();
-            Debug.Log("1");
         }
         else
         {
             SetMusicVolume();
             SetSFXVolume();
-            Debug.Log("2");
         }
     }
     public void SetMusicVolume()

@@ -9,6 +9,10 @@ public class GameOverPanel : MonoBehaviour
     public Button playAgainButton;
     public Button backToMenuButton;
     public event Action OnPlayAgain;
+    [SerializeField] private GameObject gameOverText;
+    [SerializeField] private GameObject newHighScoreText;
+
+    private bool showNewHighScoreText;
 
     // Store the reference to the pulse tween so we can kill it later.
     private Tween pulseTween;
@@ -23,13 +27,17 @@ public class GameOverPanel : MonoBehaviour
             {
                 OnPlayAgain?.Invoke();
                 gameObject.SetActive(false);
+                showNewHighScoreText = false;
             });
 
         if (playAgainButton != null)
             playAgainButton.onClick.AddListener(() =>
             {
+                showNewHighScoreText = false;
                 SceneManager.LoadScene(0);
             });
+
+        
 
     }
     private void Start()
@@ -38,8 +46,11 @@ public class GameOverPanel : MonoBehaviour
 
         
 
-        if (GameManager.Instance != null)
+        if (GameManager.Instance != null) 
+        { 
             GameManager.Instance.OnGameOver += HandleLevelCompleted;
+            GameManager.Instance.OnNewHighScore += SetNewHighScoreTextTrue;
+        }
         else
             Debug.LogError("GameManager instance not found!");
     }
@@ -66,6 +77,10 @@ public class GameOverPanel : MonoBehaviour
 
         // Activate panel and reset scale.
         gameObject.SetActive(true);
+
+        
+        newHighScoreText.SetActive(showNewHighScoreText);
+    
         transform.localScale = Vector3.zero;
 
         // Play the pop-up animation.
@@ -90,6 +105,11 @@ public class GameOverPanel : MonoBehaviour
             pulseTween = null;
         }
         gameObject.SetActive(false);
+    }
+
+    private void SetNewHighScoreTextTrue()
+    {
+        showNewHighScoreText = true;
     }
 
 }

@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public event Action<int> OnScoreDisplay;
     public event Action OnStageDisplay;
     public event Action OnPlayAgain;
+    public event Action OnNewHighScore;
 
     // Reference to the GridManager (which is assumed to fire an event when score is zero)
     private GridManager gridManager;
@@ -32,6 +33,13 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         score = 0;
+
+        if (!PlayerPrefs.HasKey("Highscore"))
+        {
+            PlayerPrefs.SetInt("Highscore", 0);
+        }
+
+        
     }
 
     private void Start()
@@ -51,10 +59,7 @@ public class GameManager : MonoBehaviour
             gameOverPanel.OnPlayAgain += PlayAgain;
         }
 
-        if (volumeSettings != null)
-        {
-            volumeSettings.Initialise();
-        }
+        
     }
 
     private void OnDestroy()
@@ -80,8 +85,14 @@ public class GameManager : MonoBehaviour
     }
 
     // This method is called when the score reaches zero (either via the event or direct check).
-    private void HandleScoreZero()
+    private void HandleScoreZero(int addedScore)
     {
+        if ((score+addedScore) > PlayerPrefs.GetInt("Highscore"))
+        {
+            PlayerPrefs.SetInt("Highscore", (score+addedScore));
+            OnNewHighScore?.Invoke();
+            Debug.Log("New Highscore: " + PlayerPrefs.GetInt("Highscore"));
+        }
         // At this point a gridManager notified the gameManager that the player lost
         EndGame();     
     }
@@ -111,6 +122,8 @@ public class GameManager : MonoBehaviour
         OnGameOver?.Invoke();
         OnRevealGrid?.Invoke();
         SoundManager.Instance.PlaySfx("lose");
+
+        
     }
 
     private void PlayAgain()

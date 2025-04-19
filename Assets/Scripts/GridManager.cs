@@ -12,10 +12,11 @@ public class GridManager : MonoBehaviour
     private int maxScore;
     private int maxSumOfPoints;
     private int currentSumOfPoints=0;
+    private bool openedOneBlock = false;
 
     private bool inputActive = true;
 
-    public event Action OnScoreZero;
+    public event Action<int> OnScoreZero;
     public event Action<int> OnScoreUpdate;
     public event Action<int> OnScoreMax;
     public event Action OnDisplayBoard;
@@ -215,18 +216,28 @@ public class GridManager : MonoBehaviour
                             if (clickedBlock.GetBlockValue() == 0)
                             {
                                 // Game Over
-                                OnScoreZero?.Invoke();
+                                if (openedOneBlock)
+                                {
+                                    OnScoreZero?.Invoke(currentScore);
+                                }
+                                else
+                                {
+                                    OnScoreZero?.Invoke(0);
+                                }
                                 gameOver = true;
                             }
                             else if (clickedBlock.GetBlockValue() != 1)
-                            {
-                                
+                            { 
                                 currentScore *= clickedBlock.GetBlockValue(); //Update score of this specific level
                                 OnScoreUpdate?.Invoke(currentScore);
                                 currentSumOfPoints += clickedBlock.GetBlockValue();
                             }
+                            else if(!openedOneBlock&& clickedBlock.GetBlockValue() == 1)
+                            {
+                                OnScoreUpdate?.Invoke(currentScore);
+                            }
 
-                            
+                                openedOneBlock = true;
 
                             //Debug.Log("score: " + currentScore);
 
@@ -236,9 +247,6 @@ public class GridManager : MonoBehaviour
                                 OnScoreMax?.Invoke(currentScore);
                                 levelCompleted = true;
                             }
-
-                            Debug.Log("Current poooints: "+ currentSumOfPoints);
-                            Debug.Log("Max poooints: " + maxSumOfPoints);
 
                             float levelProgress = (float)currentSumOfPoints / (float)maxSumOfPoints;
                             
@@ -273,6 +281,8 @@ public class GridManager : MonoBehaviour
     private void ContinueToNextLevel()
     {
         SetInputActiveFalse();
+
+        openedOneBlock = false;
 
         // Create a new grid for the next level
         grid = new Grid(gameManager.GetCurrentLevel(), cellSize);

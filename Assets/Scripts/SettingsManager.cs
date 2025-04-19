@@ -14,6 +14,8 @@ public class SettingsManager : MonoBehaviour
     public Button backToMenuButton;
     public Button exitButton;
 
+    [SerializeField] private VolumeSettings volumeSettings;
+
     private void Start()
     {
         // Ensure both the settings panel and overlay start disabled.
@@ -24,6 +26,10 @@ public class SettingsManager : MonoBehaviour
         if (overlayPanel != null)
         {
             overlayPanel.SetActive(false);
+        }
+        if (volumeSettings != null)
+        {
+            volumeSettings.Initialise();
         }
 
         backToMenuButton.onClick.AddListener(() =>

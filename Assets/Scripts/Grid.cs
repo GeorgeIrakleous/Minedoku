@@ -15,6 +15,11 @@ public class Grid
     // Constructor: now takes an additional 'level' parameter.
     public Grid(int level, float cellSize)
     {
+        if (level > 6)
+        {
+            level = 6;
+        }
+
         // Fixed grid size 5x5.
         this.width = 5;
         this.height = 5;
